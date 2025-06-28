@@ -28,7 +28,6 @@ class MytheresaScraper(scrapy.Spider):
                 }
                 yield from self.parse_with_curl(full_url, meta_data)
 
-        # Move to next page
         next_page = current_page + 1
         next_url = f'https://www.mytheresa.com/int/en/men/shoes?page={next_page}'
         yield scrapy.Request(
@@ -37,7 +36,6 @@ class MytheresaScraper(scrapy.Spider):
             meta={'page': next_page},
             dont_filter=True
         )
-
     def parse_with_curl(self, url, meta):
         USER_AGENTS = [
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
@@ -102,36 +100,3 @@ class MytheresaScraper(scrapy.Spider):
             'other_images' : images
         }
 
-
-# import scrapy
-# import json
-
-# class MytheresaAPISpider(scrapy.Spider):
-#     name = "mytheresa"
-#     start_urls = ['https://api.mytheresa.com/api']  # <-- Replace with actual API path if needed
-
-#     def start_requests(self):
-#         headers = {
-#             'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0',
-#             'Accept': 'application/json',
-#         }
-
-#         for url in self.start_urls:
-#             yield scrapy.Request(
-#                 url=url,
-#                 headers=headers,
-#                 callback=self.parse_api,
-#                 method='POST',
-#             )
-
-#     def parse_api(self, response):
-#         try:
-#             data = json.loads(response.text)
-#         except json.JSONDecodeError:
-#             self.logger.error("Failed to decode JSON")
-#             return
-
-#         # Example: print or yield specific fields from the API response
-#         yield {
-#             "raw_data": data
-#         }
